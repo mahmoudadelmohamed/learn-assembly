@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+}
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.card1 {
+  flex: 1;
+  background-color: blue;
+  overflow-y: auto;
+}
+.card2 {
+  flex: 1;
+  background-color: red;
+  overflow-y: auto;
+
+}
