@@ -1,0 +1,39 @@
+{
+  "levels": [
+  [
+    { "value": "DATA SEGMENT", "description": "DATA SEGMENT", "order": [0], "count": 1 },
+    { "value": "NUM1 DB 9H", "description": "NUM1 DB 9H", "order": [1, 2, 3], "count": 1 },
+    { "value": "NUM2 DB 7H", "description": "NUM2 DB 7H", "order": [1, 2, 3], "count": 1 },
+    { "value": "RESULT DB ?", "description": "RESULT DB ?", "order": [1, 2, 3], "count": 1 },
+    { "value": "ENDS", "description": "ENDS", "order": [4, 15], "count": 2 },
+    { "value": "CODE SEGMENT", "description": "CODE SEGMENT", "order": [5], "count": 1 },
+    { "value": "ASSUME DS:DATA CS:CODE", "description": "ASSUME DS:DATA CS:CODE", "order": [6], "count": 1 },
+    { "value": "START:", "description": "START:", "order": [7], "count": 1 },
+    { "value": "MOV AX,DATA", "description": "MOV AX,DATA", "order": [8], "count": 1 },
+    { "value": "MOV DS,AX", "description": "MOV DS,AX", "order": [9], "count": 1 },
+    { "value": "MOV AL,NUM1", "description": "MOV AL,NUM1", "order": [10], "count": 1 },
+    { "value": "ADD AL,NUM2", "description": "ADD AL,NUM2", "order": [11], "count": 1 },
+    { "value": "MOV RESULT,AL", "description": "MOV RESULT,AL", "order": [12], "count": 1 },
+    { "value": "MOV AH,4CH", "description": "MOV AH,4CH", "order": [13], "count": 1 },
+    { "value": "INT 21H", "description": "INT 21H", "order": [14], "count": 1 },
+    { "value": "END START", "description": "END START", "order": [16], "count": 1 }
+  ],
+  [
+    { "value": "DATA SEGMENT", "description": "DATA SEGMENT", "order": [0], "count": 1 },
+    { "value": "NUM1 DB 9H", "description": "NUM1 DB 9H", "order": [1, 2, 3], "count": 1 },
+    { "value": "NUM2 DB 7H", "description": "NUM2 DB 7H", "order": [1, 2, 3], "count": 1 },
+    { "value": "RESULT DB ?", "description": "RESULT DB ?", "order": [1, 2, 3], "count": 1 },
+    { "value": "ENDS", "description": "ENDS", "order": [4], "count": 2 },
+    { "value": "CODE SEGMENT", "description": "CODE SEGMENT", "order": [5], "count": 1 },
+    { "value": "ASSUME DS:DATA CS:CODE", "description": "ASSUME DS:DATA CS:CODE", "order": [6], "count": 1 },
+    { "value": "START:", "description": "START:", "order": [7], "count": 1 },
+    { "value": "MOV AX,DATA", "description": "MOV AX,DATA", "order": [8], "count": 1 },
+    { "value": "MOV DS,AX", "description": "MOV DS,AX", "order": [9], "count": 1 },
+    { "value": "MOV AL,NUM1", "description": "MOV AL,NUM1", "order": [10], "count": 1 },
+    { "value": "ADD AL,NUM2", "description": "ADD AL,NUM2", "order": [11], "count": 1 },
+    { "value": "MOV RESULT,AL", "description": "MOV RESULT,AL", "order": [12], "count": 1 },
+    { "value": "MOV AH,4CH", "description": "MOV AH,4CH", "order": [13], "count": 1 },
+    { "value": "INT 21H", "description": "INT 21H", "order": [14], "count": 1 },
+    { "value": "END START", "description": "END START", "order": [16], "count": 1 }
+  ]
+]}

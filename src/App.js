@@ -1,48 +1,25 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 import { Card, Typography, CardContent, CardHeader, AppBar, Toolbar, Button, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import Confetti from 'react-confetti';
+import firebase from 'firebase/app';
+import 'firebase/database'
 
-const levels = [
-  [
-    { value: "DATA SEGMENT", description: "DATA SEGMENT", order: [0,], count: 1 },
-    // { value: "NUM1 DB 9H", description: "NUM1 DB 9H", order: [1, 2, 3], count: 1 },
-    // { value: "NUM2 DB 7H", description: "NUM2 DB 7H", order: [1, 2, 3], count: 1 },
-    // { value: "RESULT DB ?", description: "RESULT DB ?", order: [1, 2, 3], count: 1 },
-    // { value: "ENDS", description: "ENDS", order: [4, 15], count: 2 },
-    // { value: "CODE SEGMENT", description: "CODE SEGMENT", order: [5,], count: 1 },
-    // { value: "ASSUME DS:DATA CS:CODE", description: "ASSUME DS:DATA CS:CODE", order: [6,], count: 1 },
-    // { value: "START:", description: "START:", order: [7,], count: 1 },
-    // { value: "MOV AX,DATA", description: "MOV AX,DATA", order: [8,], count: 1 },
-    // { value: "MOV DS,AX", description: "MOV DS,AX", order: [9,], count: 1 },
-    // { value: "MOV AL,NUM1", description: "MOV AL,NUM1", order: [10,], count: 1 },
-    // { value: "ADD AL,NUM2", description: "ADD AL,NUM2", order: [11,], count: 1 },
-    // { value: "MOV RESULT,AL", description: "MOV RESULT,AL", order: [12,], count: 1 },
-    // { value: "MOV AH,4CH", description: "MOV AH,4CH", order: [13,], count: 1 },
-    // { value: "INT 21H", description: "INT 21H", order: [14,], count: 1 },
-    // { value: "END START", description: "END START", order: [16,], count: 1 },
-  ],
-  [
-    { value: "DATA SEGMENT", description: "DATA SEGMENT", order: [0,], count: 1 },
-    // { value: "NUM1 DB 9H", description: "NUM1 DB 9H", order: [1, 2, 3], count: 1 },
-    // { value: "NUM2 DB 7H", description: "NUM2 DB 7H", order: [1, 2, 3], count: 1 },
-    // { value: "RESULT DB ?", description: "RESULT DB ?", order: [1, 2, 3], count: 1 },
-    // { value: "ENDS", description: "ENDS", order: [4,], count: 2 },
-    // { value: "CODE SEGMENT", description: "CODE SEGMENT", order: [5,], count: 1 },
-    // { value: "ASSUME DS:DATA CS:CODE", description: "ASSUME DS:DATA CS:CODE", order: [6,], count: 1 },
-    // { value: "START:", description: "START:", order: [7,], count: 1 },
-    // { value: "MOV AX,DATA", description: "MOV AX,DATA", order: [8,], count: 1 },
-    // { value: "MOV DS,AX", description: "MOV DS,AX", order: [9,], count: 1 },
-    // { value: "MOV AL,NUM1", description: "MOV AL,NUM1", order: [10,], count: 1 },
-    // { value: "ADD AL,NUM2", description: "ADD AL,NUM2", order: [11,], count: 1 },
-    // { value: "MOV RESULT,AL", description: "MOV RESULT,AL", order: [12,], count: 1 },
-    // { value: "MOV AH,4CH", description: "MOV AH,4CH", order: [13,], count: 1 },
-    // { value: "INT 21H", description: "INT 21H", order: [14,], count: 1 },
-    // { value: "END START", description: "END START", order: [16,], count: 1 },
-  ]
-];
+const app = firebase.initializeApp(
+  {
+    apiKey: "AIzaSyDa40FkWIaOuFGfq39nhGo6myhvqzwEnT4",
+    authDomain: "learn-assembly.firebaseapp.com",
+    databaseURL: "https://learn-assembly-default-rtdb.firebaseio.com",
+    projectId: "learn-assembly",
+    storageBucket: "learn-assembly.appspot.com",
+    messagingSenderId: "900563877724",
+    appId: "1:900563877724:web:36c1a600d62b534edd0b99",
+    measurementId: "G-NJTTJYV0KG"
+  },
+);
+
 
 const shuffle = (arr) => {
   arr = arr.slice(0);
@@ -84,10 +61,24 @@ function CodeCard({ item, onClick }) {
 }
 
 function App() {
-  const [arr1, setArr1] = useState(generateArray(levels[0]));
+  const [levels, setLevels] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [arr1, setArr1] = useState([]);
   const [arr2, setArr2] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [currentLevel, setCurrentLevel] = useState(0);
+
+  useEffect(() => {
+    const a = async () => {
+      const snap = await app.database().ref('levels').get();
+      const val = snap.val();
+      setLevels(val);
+      setArr1(generateArray(val[0]))
+      console.log(val);
+      setLoading(false);
+    }
+    a();
+  }, [])
 
   const AddHandleClick = (index) => {
     arr2.push(arr1[index]);
@@ -117,6 +108,24 @@ function App() {
     console.log(isValid);
     return isValid;
   }
+  if (isLoading) {
+    return (
+      <div className="container">
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h2" style={{
+            color: 'green'
+          }}>Loading...</Typography>
+        </div>
+      </div>
+    );
+  }
   if (currentLevel === levels.length) {
     return (
       <div className="container">
@@ -130,8 +139,8 @@ function App() {
           style={{
             flex: 1,
             display: 'flex',
-            justifyContent:'center',
-            alignItems:'center',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
           <Typography variant="h2" style={{
@@ -155,7 +164,7 @@ function App() {
             style={{
               flex: 1
             }}
-           >{`Level ${currentLevel + 1  }`}</Typography>
+          >{`Level ${currentLevel + 1}`}</Typography>
           <Button color="inherit" onClick={() => {
             const isValid = compareArrays();
             if (!isValid) {
