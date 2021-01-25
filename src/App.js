@@ -3,23 +3,22 @@ import React, { useState } from 'react';
 import './styles.css';
 
 const LEVEL_1 = [
-  { "id": 0, "value": "DATA SEGMENT" },
-  { "id": 1, "value": "NUM1 DB 9H" },
-  { "id": 2, "value": "NUM2 DB 7H" },
-  { "id": 3, "value": "RESULT DB ?" },
-  { "id": 4, "value": "ENDS #DATA SEGMENT" },
-  { "id": 5, "value": "CODE SEGMENT" },
-  { "id": 6, "value": "ASSUME DS:DATA CS:CODE" },
-  { "id": 7, "value": "START:" },
-  { "id": 8, "value": "MOV AX,DATA" },
-  { "id": 9, "value": "MOV DS,AX" },
-  { "id": 10, "value": "MOV AL,NUM1" },
-  { "id": 11, "value": "ADD AL,NUM2" },
-  { "id": 12, "value": "MOV RESULT,AL" },
-  { "id": 13, "value": "MOV AH,4CH" },
-  { "id": 14, "value": "INT 21H" },
-  { "id": 15, "value": "ENDS" },
-  { "id": 16, "value": "END START" }
+  { "value": "DATA SEGMENT", order: [0,], count: 1 },
+  { "value": "NUM1 DB 9H", order: [1, 2, 3], count: 1 },
+  { "value": "NUM2 DB 7H", order: [1, 2, 3], count: 1 },
+  { "value": "RESULT DB ?", order: [1, 2, 3], count: 1 },
+  { "value": "ENDS", order: [4, 15], count: 2 },
+  { "value": "CODE SEGMENT", order: [5,], count: 1 },
+  { "value": "ASSUME DS:DATA CS:CODE", order: [6,], count: 1 },
+  { "value": "START:", order: [7,], count: 1 },
+  { "value": "MOV AX,DATA", order: [8,], count: 1 },
+  { "value": "MOV DS,AX", order: [9,], count: 1 },
+  { "value": "MOV AL,NUM1", order: [10,], count: 1 },
+  { "value": "ADD AL,NUM2", order: [11,], count: 1 },
+  { "value": "MOV RESULT,AL", order: [12,], count: 1 },
+  { "value": "MOV AH,4CH", order: [13,], count: 1 },
+  { "value": "INT 21H", order: [14,], count: 1 },
+  { "value": "END START", order: [16,], count: 1 },
 ];
 
 const shuffle = (arr) => {
@@ -34,42 +33,63 @@ const shuffle = (arr) => {
   return out;
 }
 
+const generateArray = (level) => {
+  let out = [];
+  level.forEach((val) => {
+    out = out.concat(Array(val.count).fill(val))
+  });
+  return shuffle(out);
+}
+
+
 function App() {
-  const [arr1, setArr1] = useState(shuffle(LEVEL_1));
+  const [arr1, setArr1] = useState(generateArray(LEVEL_1));
   const [arr2, setArr2] = useState([]);
 
-  const AddHandleClick = (e) => {
-    arr2.push(e);
+  const AddHandleClick = (index) => {
+    arr2.push(arr1[index]);
     setArr2(arr2.slice(0));
-    const filterArr = arr1.filter(item => item.id !== e.id);
-    setArr1(filterArr);
+    const newArr1 = arr1.slice(0);
+    newArr1.splice(index, 1);
+    setArr1(newArr1);
   }
-  const SubHandleClick = (e) => {
-    arr1.push(e);
+  const SubHandleClick = (index) => {
+    arr1.push(arr2[index]);
     setArr1(arr1.slice(0));
-    const filterArr = arr2.filter(item => item.id !== e.id);
-    setArr2(filterArr)
+    const newArr2 = arr2.slice(0);
+    newArr2.splice(index, 1);
+    setArr2(newArr2)
   }
   const compairArrays = () => {
-    const isValid = JSON.stringify(LEVEL_1) === JSON.stringify(arr2);
+    let isValid = true;
+    if (arr1.length) {
+      isValid = false;
+    } else {
+      arr2.forEach((val, index) => {
+        if (!val.order.includes(index)) {
+          isValid = false
+        }
+      });
+    }
     console.log(isValid);
+    return isValid;
   }
   return (
     <div className="container">
       <div style={{ flex: 1, display: 'flex', flexDirection: "row" }}>
         <div className="card1">
-          {arr1.map(item => {
+          {arr1.map((item, index) => {
             return (
-              <div key={item.id} onClick={() => AddHandleClick(item)}>
+              <div key={item.id} onClick={() => AddHandleClick(index)}>
                 <h3>{item.value}</h3>
               </div>
             )
           })}
         </div>
         <div className="card2">
-          {arr2.map(item => {
+          {arr2.map((item, index) => {
             return (
-              <div key={item.id} onClick={() => SubHandleClick(item)}>
+              <div key={item.id} onClick={() => SubHandleClick(index)}>
                 <h3>{item.value}</h3>
               </div>
             )
