@@ -1,25 +1,25 @@
 
 import React, { useState } from 'react';
 import './styles.css';
-import { Card, Typography, CardContent } from '@material-ui/core';
+import { Card, Typography, CardContent, CardHeader, AppBar, Toolbar, Button } from '@material-ui/core';
 
 const LEVEL_1 = [
-  { "value": "DATA SEGMENT", order: [0,], count: 1 },
-  { "value": "NUM1 DB 9H", order: [1, 2, 3], count: 1 },
-  { "value": "NUM2 DB 7H", order: [1, 2, 3], count: 1 },
-  { "value": "RESULT DB ?", order: [1, 2, 3], count: 1 },
-  { "value": "ENDS", order: [4, 15], count: 2 },
-  { "value": "CODE SEGMENT", order: [5,], count: 1 },
-  { "value": "ASSUME DS:DATA CS:CODE", order: [6,], count: 1 },
-  { "value": "START:", order: [7,], count: 1 },
-  { "value": "MOV AX,DATA", order: [8,], count: 1 },
-  { "value": "MOV DS,AX", order: [9,], count: 1 },
-  { "value": "MOV AL,NUM1", order: [10,], count: 1 },
-  { "value": "ADD AL,NUM2", order: [11,], count: 1 },
-  { "value": "MOV RESULT,AL", order: [12,], count: 1 },
-  { "value": "MOV AH,4CH", order: [13,], count: 1 },
-  { "value": "INT 21H", order: [14,], count: 1 },
-  { "value": "END START", order: [16,], count: 1 },
+  { value: "DATA SEGMENT", description: "DATA SEGMENT", order: [0,], count: 1 },
+  { value: "NUM1 DB 9H", description: "NUM1 DB 9H", order: [1, 2, 3], count: 1 },
+  { value: "NUM2 DB 7H", description: "NUM2 DB 7H", order: [1, 2, 3], count: 1 },
+  { value: "RESULT DB ?", description: "RESULT DB ?", order: [1, 2, 3], count: 1 },
+  { value: "ENDS", description: "ENDS", order: [4, 15], count: 2 },
+  { value: "CODE SEGMENT", description: "CODE SEGMENT", order: [5,], count: 1 },
+  { value: "ASSUME DS:DATA CS:CODE", description: "ASSUME DS:DATA CS:CODE", order: [6,], count: 1 },
+  { value: "START:", description: "START:", order: [7,], count: 1 },
+  { value: "MOV AX,DATA", description: "MOV AX,DATA", order: [8,], count: 1 },
+  { value: "MOV DS,AX", description: "MOV DS,AX", order: [9,], count: 1 },
+  { value: "MOV AL,NUM1", description: "MOV AL,NUM1", order: [10,], count: 1 },
+  { value: "ADD AL,NUM2", description: "ADD AL,NUM2", order: [11,], count: 1 },
+  { value: "MOV RESULT,AL", description: "MOV RESULT,AL", order: [12,], count: 1 },
+  { value: "MOV AH,4CH", description: "MOV AH,4CH", order: [13,], count: 1 },
+  { value: "INT 21H", description: "INT 21H", order: [14,], count: 1 },
+  { value: "END START", description: "END START", order: [16,], count: 1 },
 ];
 
 const shuffle = (arr) => {
@@ -45,9 +45,12 @@ const generateArray = (level) => {
 function CodeCard({ item, onClick }) {
   return (
     <Card className="code-card" key={item.id} onClick={onClick}>
+      <CardHeader
+        title={item.value}
+      />
       <CardContent>
-        <Typography color="textSecondary" gutterBottom>
-          {item.value}
+        <Typography variant="body1" color="textSecondary" gutterBottom>
+          {item.description}
         </Typography>
       </CardContent>
     </Card>
@@ -72,7 +75,7 @@ function App() {
     newArr2.splice(index, 1);
     setArr2(newArr2)
   }
-  const compairArrays = () => {
+  const compareArrays = () => {
     let isValid = true;
     if (arr1.length) {
       isValid = false;
@@ -88,6 +91,11 @@ function App() {
   }
   return (
     <div className="container">
+      <AppBar position="static">
+        <Toolbar>
+          <Button color="inherit" onClick={() => compareArrays()}>Submit</Button>
+        </Toolbar>
+      </AppBar>
       <div style={{ flex: 1, display: 'flex', flexDirection: "row" }}>
         <div className="card1">
           {arr1.map((item, index) => {
@@ -103,9 +111,6 @@ function App() {
             )
           })}
         </div>
-      </div>
-      <div>
-        <button onClick={() => compairArrays()}>SUBMIT</button>
       </div>
     </div>
   );
