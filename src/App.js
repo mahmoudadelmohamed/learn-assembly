@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import './styles.css';
+import { Card, Typography, CardContent } from '@material-ui/core';
 
 const LEVEL_1 = [
   { "value": "DATA SEGMENT", order: [0,], count: 1 },
@@ -41,6 +42,17 @@ const generateArray = (level) => {
   return shuffle(out);
 }
 
+function CodeCard({ item, onClick }) {
+  return (
+    <Card className="code-card" key={item.id} onClick={onClick}>
+      <CardContent>
+        <Typography color="textSecondary" gutterBottom>
+          {item.value}
+        </Typography>
+      </CardContent>
+    </Card>
+  )
+}
 
 function App() {
   const [arr1, setArr1] = useState(generateArray(LEVEL_1));
@@ -80,18 +92,14 @@ function App() {
         <div className="card1">
           {arr1.map((item, index) => {
             return (
-              <div key={item.id} onClick={() => AddHandleClick(index)}>
-                <h3>{item.value}</h3>
-              </div>
+              <CodeCard item={item} onClick={() => AddHandleClick(index)} />
             )
           })}
         </div>
         <div className="card2">
           {arr2.map((item, index) => {
             return (
-              <div key={item.id} onClick={() => SubHandleClick(index)}>
-                <h3>{item.value}</h3>
-              </div>
+              <CodeCard item={item} onClick={() => SubHandleClick(index)} />
             )
           })}
         </div>

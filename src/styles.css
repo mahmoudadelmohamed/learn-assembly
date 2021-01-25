@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
 }
@@ -9,12 +10,17 @@ body {
 }
 .card1 {
   flex: 1;
-  background-color: blue;
   overflow-y: auto;
 }
 .card2 {
   flex: 1;
-  background-color: red;
   overflow-y: auto;
-
+}
+.code-card {
+  cursor: pointer;
+  background-color: #EEE;
+}
+.code-card:hover {
+  cursor: pointer;
+  background-color: #AAA;
 }
