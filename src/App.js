@@ -134,7 +134,9 @@ function App() {
             alignItems:'center',
           }}
         >
-          <Typography variant="h2" color="success">Congratulations you have learned assembly!</Typography>
+          <Typography variant="h2" style={{
+            color: 'green'
+          }}>Congratulations you have learned assembly!</Typography>
         </div>
       </div>
     );
