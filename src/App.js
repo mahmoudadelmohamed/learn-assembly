@@ -150,6 +150,12 @@ function App() {
       </Snackbar>
       <AppBar position="static">
         <Toolbar>
+          <Typography
+            variant="h4"
+            style={{
+              flex: 1
+            }}
+           >{`Level ${currentLevel + 1  }`}</Typography>
           <Button color="inherit" onClick={() => {
             const isValid = compareArrays();
             if (!isValid) {
