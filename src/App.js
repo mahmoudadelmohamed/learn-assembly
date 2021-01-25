@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import './styles.css';
-import { Card, Typography, CardContent, CardHeader, AppBar, Toolbar, Button } from '@material-ui/core';
+import { Card, Typography, CardContent, CardHeader, AppBar, Toolbar, Button, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const LEVEL_1 = [
   { value: "DATA SEGMENT", description: "DATA SEGMENT", order: [0,], count: 1 },
@@ -42,6 +43,10 @@ const generateArray = (level) => {
   return shuffle(out);
 }
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function CodeCard({ item, onClick }) {
   return (
     <Card className="code-card" key={item.id} onClick={onClick}>
@@ -60,6 +65,7 @@ function CodeCard({ item, onClick }) {
 function App() {
   const [arr1, setArr1] = useState(generateArray(LEVEL_1));
   const [arr2, setArr2] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const AddHandleClick = (index) => {
     arr2.push(arr1[index]);
@@ -91,9 +97,19 @@ function App() {
   }
   return (
     <div className="container">
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+        <Alert onClose={() => setSnackbarOpen(false)} severity="error">
+          Incorret! Try again
+        </Alert>
+      </Snackbar>
       <AppBar position="static">
         <Toolbar>
-          <Button color="inherit" onClick={() => compareArrays()}>Submit</Button>
+          <Button color="inherit" onClick={() => {
+            const isValid = compareArrays();
+            if (!isValid) {
+              setSnackbarOpen(true);
+            }
+            }}>Submit</Button>
         </Toolbar>
       </AppBar>
       <div style={{ flex: 1, display: 'flex', flexDirection: "row" }}>
